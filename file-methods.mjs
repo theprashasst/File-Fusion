@@ -7,7 +7,7 @@ export async function ReadFile(file_name){
         }
     catch(error){
         // console.error();
-        return "No such file"
+        return "No such file Available"
     }
 }
 export async function ReadDir(){
