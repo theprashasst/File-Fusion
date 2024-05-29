@@ -1,4 +1,4 @@
-import { ReadDir, ReadFile } from "../file-methods.mjs";
+import { ReadDir, ReadFile } from "../file-methods.js";
 import {z} from 'zod';
 // async function ReadDir(){
 //   const files=await fs.readdir("Sharable-Folder")
