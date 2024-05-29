@@ -32,10 +32,10 @@ export function JWTverify(req,res,next){
     jwt.verify(token,secretKey,(err,decoded)=>{
         if(err){
             console.log("Could not verify");
-            res.json("Please Login First");
+            res.status(401).json("Please Login First");
         }
         else{
-            console.log(`${decoded.email} user is logged in`)
+            console.log(`${decoded.email} is logged in`)
             next();
         }
         
