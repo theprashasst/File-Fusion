@@ -1,3 +1,4 @@
+import { json } from 'express';
 import fss from 'fs';
 const fs= fss.promises;
 
@@ -16,7 +17,9 @@ export async function ReadDir(){
 }
 // (async ()=>{
 //     const read=await ReadFile('file1.txt');
-//     const dir=await ReadDir();
-//     console.log(read,dir);
+//     const data=await ReadDir();
+//     // const dir =JSON.parse(data)
+//     console.log(typeof data)
+//     console.log(data);
 // })();
 

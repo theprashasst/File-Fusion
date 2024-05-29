@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pretty List from Array</title>
+    <style>
+        /* CSS for styling the list */
+        ul.pretty-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul.pretty-list li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pretty List from Array</h1>
+    <ul id="myList" class="pretty-list"></ul>
+
+    <script>
+        import fss from 'fs';
+        const fs= fss.promises;
+
+        export async function ReadFile(file_name){
+            try {const data =await fs.readFile(`Sharable-Folder/${file_name}`,"utf-8")
+                return data;
+            }
+            catch(error){
+                // console.error();
+                return "No such file Available"
+            }
+}
+        export async function ReadDir(){
+            const files=await fs.readdir("Sharable-Folder")
+            return files
+        }
+        // JavaScript to generate the list
+        (async ()=>{
+            let filee= await ReadDir();
+            const array = ["Item 1", "Item 2", "Item 3", "Item 4"];
+            // const array=JSON.parse(filee);
+            // const array=filee;
+
+            // Get the reference to the container
+            const listContainer = document.getElementById('myList');
+
+            // Iterate over the array and create list items
+            array.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item;
+                listContainer.appendChild(listItem);
+            });
+        })();
+    </script>
+
+</body>
+</html>
