@@ -1,5 +1,5 @@
 import { ReadDir,ReadFile , AppendFile} from './file-methods.js';
-import { generateJWT, validate } from './Authentication.js';
+import { generateJWT, validate, JWTverify } from './Authentication.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import path from 'path';
@@ -10,7 +10,7 @@ const port=8000;
 
 //local in memory storage
 
-const users=[]
+export const localStorage={};
 
 
 
@@ -34,10 +34,10 @@ app.post('/signin',(req,res)=>{
     const payload= req.body;
     if (validate(payload)){
         AppendFile("users.txt",payload.email+" ");
-        users.push(payload.email)
         const token = generateJWT(payload);
-        res.json(token);
-        console.log(users);
+        localStorage.authToken=token;
+        // localStorage.setItem("authToken",token)
+        res.json("Success");
     }
     else{
         res.status(403).json({
@@ -46,11 +46,10 @@ app.post('/signin',(req,res)=>{
     }
 });
 
-app.get("/users",async (req,res)=>{
+app.get("/users",JWTverify,async (req,res)=>{
     let user= await ReadFile("users.txt");
     console.log(user);
     res.status(201).json(user);
-
 });
 
 
