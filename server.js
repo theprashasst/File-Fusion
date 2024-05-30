@@ -10,7 +10,9 @@ const port=8000;
 
 //local in memory storage
 
-export const localStorage={};
+export const localStorage={
+    authToken:"invalid"
+};
 
 
 
@@ -46,9 +48,17 @@ app.post('/signin',(req,res)=>{
     }
 });
 
+app.get("/logout",(req, res)=>{
+    localStorage.authToken="invalid";
+    // res.status(302).redirect("/signin");
+    res.status(302).json("Loged Out");
+    
+});
+
 app.get("/users",JWTverify,async (req,res)=>{
     let user= await ReadFile("users.txt");
     console.log(user);
+    
     res.status(201).json(user);
 });
 
