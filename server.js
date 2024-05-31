@@ -85,8 +85,11 @@ app.post('/signin',async(req,res)=>{
             const check= user.password==userdata.password ? true: false;
             if (check){
                 // AppendFile("users.txt",newuser.email+" ");
-                const token = generateJWT(userdata);
-                localStorage.authToken=token;
+                const token = generateJWT({
+                    username:userdata.email,
+                    signed_by:"Prashasst"
+                });
+                // localStorage.authToken=token;
                 // localStorage.setItem("authToken",token)
                 console.log(user.name,"is logined");
                 res.status(201).json({
@@ -111,6 +114,7 @@ app.post('/signin',async(req,res)=>{
 });
 
 app.get("/logout",(req, res)=>{
+
     localStorage.authToken="invalid";
     // res.status(302).redirect("/signin");
     res.status(302).json("Loged Out");

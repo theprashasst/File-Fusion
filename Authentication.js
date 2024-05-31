@@ -36,11 +36,13 @@ export function validateSignin(userdata){
 
 export function JWTverify(req,res,next){
     // const token=localStorage.getItem('authToken')
-    const token=localStorage.authToken;
+    // const token=localStorage.authToken;
+    // const token= req.headers.Authorization;
+    const token = req.headers.authorization;
     
     jwt.verify(token,secretKey,(err,decoded)=>{
         if(err){
-            console.log("Could not verify");
+            console.log("Could not verify", token);
             res.status(401).json("Please Login First");
         }
         else{
