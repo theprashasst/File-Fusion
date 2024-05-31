@@ -1,5 +1,6 @@
 import { ReadDir,ReadFile , AppendFile} from './file-methods.js';
 import { generateJWT, validate, JWTverify } from './Authentication.js';
+import { Users } from './Databases.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import path from 'path';
@@ -32,11 +33,50 @@ app.get("/All-files",async (req,res)=>{
 
 })
 
+//signup endpoint
+
+app.post('/signup',(req,res)=>{
+    const userdata= req.body;
+    if (validate(userdata)){
+
+        const newuser=new Users(userdata);
+        newuser.save()
+        .then(
+            (user)=>{
+                console.log(user.name,"is registered");
+                res.status(201).json({
+                    msg:`${user.name} is successfully registered`
+                })
+            }
+        )
+        .catch(
+            (err)=>{
+                console.log("user adding failed \n",err);
+                res.status(201).json({
+                    msg:'Failed to register'
+                })
+            }
+        );
+        
+
+
+    }
+    else{
+        res.status(403).json({
+            msg:"Wrong input type"
+        })
+    }
+
+});
+
+
+
+
 app.post('/signin',(req,res)=>{
-    const payload= req.body;
-    if (validate(payload)){
-        AppendFile("users.txt",payload.email+" ");
-        const token = generateJWT(payload);
+    const newuser= req.body;
+    if (validate(newuser)){
+        // AppendFile("users.txt",newuser.email+" ");
+        const token = generateJWT(user);
         localStorage.authToken=token;
         // localStorage.setItem("authToken",token)
         res.json("Success");

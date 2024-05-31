@@ -17,6 +17,7 @@ export function generateJWT(payload){
 
 export function validate(payload){
     const schema = z.object({
+        name:z.string(),
         email:z.string().email(),
         paassword:z.coerce.string()
     })
