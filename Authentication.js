@@ -13,15 +13,23 @@ export function generateJWT(payload){
     return token;
 }
 
-//validate inputs
+//validate Signup inputs
 
-export function validate(payload){
+export function validateSignup(userdata){
     const schema = z.object({
         name:z.string(),
         email:z.string().email(),
-        paassword:z.coerce.string()
+        password:z.coerce.string()
     })
-    return schema.safeParse(payload).success;
+    return schema.safeParse(userdata).success;
+}
+
+export function validateSignin(userdata){
+    const schema= z.object({
+        email:z.string().email(),
+        password:z.coerce.string()
+    })
+    return schema.safeParse(userdata);
 }
 
 //middlewer for JWT verification

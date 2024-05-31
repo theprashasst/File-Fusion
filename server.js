@@ -1,5 +1,5 @@
 import { ReadDir,ReadFile , AppendFile} from './file-methods.js';
-import { generateJWT, validate, JWTverify } from './Authentication.js';
+import { generateJWT, validateSignup, JWTverify, validateSignin } from './Authentication.js';
 import { Users } from './Databases.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -35,30 +35,34 @@ app.get("/All-files",async (req,res)=>{
 
 //signup endpoint
 
-app.post('/signup',(req,res)=>{
+app.post('/signup',async(req,res)=>{
     const userdata= req.body;
-    if (validate(userdata)){
+    if (validateSignup(userdata)){
+        const existingUser= await Users.findOne({email:userdata.email});
+        if (existingUser){
+            res.status(400).json(`${userdata.email} already registered`)
+        }
 
-        const newuser=new Users(userdata);
-        newuser.save()
-        .then(
-            (user)=>{
-                console.log(user.name,"is registered");
-                res.status(201).json({
-                    msg:`${user.name} is successfully registered`
-                })
-            }
-        )
-        .catch(
-            (err)=>{
-                console.log("user adding failed \n",err);
-                res.status(201).json({
-                    msg:'Failed to register'
-                })
-            }
-        );
-        
-
+        else{
+            const newuser=new Users(userdata);
+            newuser.save()
+            .then(
+                (user)=>{
+                    console.log(user.name,"is registered");
+                    res.status(201).json({
+                        msg:`${user.name} is successfully registered`
+                    })
+                }
+            )
+            .catch(
+                (err)=>{
+                    console.log("user adding failed \n",err);
+                    res.status(201).json({
+                        msg:'Failed to register'
+                    })
+                }
+            );
+        }
 
     }
     else{
@@ -70,16 +74,34 @@ app.post('/signup',(req,res)=>{
 });
 
 
+app.post('/signin',async(req,res)=>{
+    const userdata= req.body;
+    if (validateSignin(userdata)){
+        const user= await Users.findOne({email:userdata.email});
+        if (!user){
+            res.status(401).json(`${userdata.email} is not registered with us`)
+        }
+        else{
+            const check= user.password==userdata.password ? true: false;
+            if (check){
+                // AppendFile("users.txt",newuser.email+" ");
+                const token = generateJWT(userdata);
+                localStorage.authToken=token;
+                // localStorage.setItem("authToken",token)
+                console.log(user.name,"is logined");
+                res.status(201).json({
+                        msg:`${user.name} is successfully logined`,
+                        Authorization:token
+                })
+            }
+            else{
+                console.log('Failed to login');
+                res.status(401).json({
+                   msg:"Password did not match"
+                })
 
-
-app.post('/signin',(req,res)=>{
-    const newuser= req.body;
-    if (validate(newuser)){
-        // AppendFile("users.txt",newuser.email+" ");
-        const token = generateJWT(user);
-        localStorage.authToken=token;
-        // localStorage.setItem("authToken",token)
-        res.json("Success");
+            }
+        }
     }
     else{
         res.status(403).json({
