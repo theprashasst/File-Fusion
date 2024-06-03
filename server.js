@@ -17,6 +17,16 @@ export const localStorage={
 
 
 
+
+// Configure CORS on the Server To resolve the CORS issue, modified the server to include the Access-Control-Allow-Origin
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 //middlewares
 
 const __filename = fileURLToPath(import.meta.url);

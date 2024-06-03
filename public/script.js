@@ -1,18 +1,12 @@
-import { ReadDir, ReadFile } from "../file-methods.js";
-import {z} from 'zod';
-// async function ReadDir(){
-//   const files=await fs.readdir("Sharable-Folder")
-//   return files
-// }
 
 async function fetchfiles(){
-  const schema= z.array(z.string());
-  // const schema =z.object();
 
-  const files= await ReadDir();
-  const response = schema.safeParse(files);
+  const response= await fetch("http://localhost:8000/All-files");
+  // const response = schema.safeParse(files);
+  const files= await response.json();
   console.log(files)
-  console.log(response);
+  
+  // console.log(response);
   // const files= JSON.parse(data)
   const list= document.getElementById("myList")
   files.forEach(currFile=>{
@@ -23,9 +17,10 @@ async function fetchfiles(){
     });
 }
 console.log("yohoho")
-// fetchfiles();
 
-// document.addEventListener('DOMContentLoaded',fetchfiles)
+
+// DOM
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOM fully loaded and parsed");
   fetchfiles(); // Call fetchFiles on DOMContentLoaded
