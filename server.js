@@ -34,6 +34,10 @@ const __dirname = dirname(__filename);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+app.get("/",(req, res)=>{
+    
+})
+
 app.get("/All-files",async (req,res)=>{
     const files= await ReadDir();
     // res.send(files[0]);

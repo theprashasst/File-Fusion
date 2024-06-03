@@ -1,7 +1,7 @@
 
 async function fetchfiles(){
 
-  const response= await fetch("http://localhost:8000/All-files");
+  const response= await fetch("/All-files");
   // const response = schema.safeParse(files);
   const files= await response.json();
   console.log(files)
