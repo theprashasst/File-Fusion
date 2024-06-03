@@ -1,12 +1,11 @@
 {
   "name": "file-fusion",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "FileFusion Web is a sophisticated web application that allows users to access, read, and write files on their PC over an HTTP server. Leveraging Node.js with Express for HTTP requests and the fs module for file system operations, this project offers a seamless experience for managing files remotely.",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node api/server.js"
   },
   "keywords": [],
   "author": "Prashasst Dongre",
