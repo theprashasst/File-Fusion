@@ -39,10 +39,10 @@ app.get("/",(req, res)=>{
 })
 
 app.get("/All-files",async (req,res)=>{
-    const files= await ReadDir();
+    // const files= await ReadDir();
     // res.send(files[0]);
     
-    res.json(files);
+    res.json("files");
     console.log(files);
 
 })
