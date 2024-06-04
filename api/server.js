@@ -47,6 +47,24 @@ app.get("/All-files",async (req,res)=>{
 
 })
 
+app.get("/Read-file",async (req,res)=>{
+    const filename= req.body.filename;
+    const data = await ReadFile(filename);
+    res.status(206).json(data);
+
+});
+app.post("/write-file",async (req,res)=>{
+    const filename= req.body.filename;
+    const data= req.body.data;
+    if(AppendFile(filename,data)){
+        res.status(201).json("Success")
+    }
+    else{
+        res.status(401).json("Could not Add Data");
+    }
+
+});
+
 //signup endpoint
 
 app.post('/signup',async(req,res)=>{
